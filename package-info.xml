@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.elkarte.net/site/package-info">
+<package-info xmlns="http://www.elkarte.net/site/package-info" xmlns:elk="http://www.elkarte.net/">
+	<id>Spuds:CloudFront</id>
+	<name>CloudFront CDN</name>
+	<version>1.0.1</version>
+	<type>addon</type>
+	<license><![CDATA[
+/**
+ * Cloudfront CDN for Elkarte
+ *
+ * @author spuds
+ * @license MPL 1.1 http://mozilla.org/MPL/1.1/
+ *
+ * @version 1.0.1
+ */
+]]></license>
+	<install for="1.0 - 1.1.99">
+		<readme parsebbc="true">readme.txt</readme>
+		<license type="inline">This ElkArte addon is released under a MPL V1.1 license, a copy of it with its provisions is included with the package.</license>
+		<require-file name="sources/cloudfront.subs.php" destination="SUBSDIR">Main processing files</require-file>
+		<require-file name="cloudfront.english.php" destination="LANGUAGEDIR/english">Language files</require-file>
+		<hook hook="integrate_buffer" file="SUBSDIR/cloudfront.subs.php" function="ob_cloud_front" />
+		<hook hook="integrate_modify_cache_settings" file="SUBSDIR/cloudfront.subs.php" function="imcs_cloud_front" />
+		<redirect url="?action=admin;area=serversettings;sa=cache;$session_var=$session_id" timeout="4000">redirect.txt</redirect>
+	</install>
+
+	<uninstall for="1.0 - 1.1.99">
+		<readme parsebbc="true">uninstall.txt</readme>
+		<hook reverse="true" hook="integrate_buffer" file="SUBSDIR/cloudfront.subs.php" function="ob_cloud_front" />
+		<hook reverse="true" hook="integrate_modify_cache_settings" file="SUBSDIR/cloudfront.subs.php" function="imcs_cloud_front" />
+		<remove-file name="SUBSDIR/cloudfront.subs.php" />
+		<remove-file name="LANGUAGEDIR/english/cloudfront.english.php" />
+		<redirect url="?action=admin;area=packages;sa=browse" timeout="3000" />
+	</uninstall>
+</package-info>
